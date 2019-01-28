@@ -4,7 +4,8 @@ import Conn from '../index';
 const CardData = Conn.define('cardData',{
         cardName: {
             type: Sequelize.STRING,
-            allowNull: false
+            allowNull: false,
+            unique: true
         },
         cardDescription: {
             type: Sequelize.TEXT,

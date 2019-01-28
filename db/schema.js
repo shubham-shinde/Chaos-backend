@@ -5,8 +5,11 @@ import Keyword from './models/keyword';
 import Action from './models/action';
 import Player from './models/player'
 
-CardData.hasMany(Keyword);
-Keyword.belongsTo(CardData);
+// CardData.hasMany(Keyword);
+// Keyword.belongsTo(CardData);
+
+CardData.belongsToMany(Keyword, {as: 'keyword', through: 'CardKeyword'})
+Keyword.belongsToMany(CardData, {as: 'card', through: 'CardKeyword'})
 
 var data = {
     cardName: 'card_1',
@@ -23,8 +26,10 @@ var key = ['keam', 'meale', 'till']
 
 Conn.sync({force: true}).then(() => {
     CardData.create(data).then((card) => {
-        card.createKeyword({
-            keyword: 'keam'
-        })
+        key.forEach((k) => card.createKeyword({
+            keyword: k
+        }))
     })
 })
+
+export default {Conn, CardData, Keyword, Action, Player};

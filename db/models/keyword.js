@@ -4,7 +4,8 @@ import Conn from '../index';
 const Keyword = Conn.define('keyword',{
     keyword: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true,
     }
 })
 

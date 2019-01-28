@@ -1,7 +1,7 @@
 import all from './all';
-import name from './byid';
+import id from './byid';
 
 export default {
     all,
-    name
+    id,
 }

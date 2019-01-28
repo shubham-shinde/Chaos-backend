@@ -1,7 +1,7 @@
 {
   "name": "chaosapi",
   "version": "1.0.0",
-  "description": "backend of project chaos",
+  "description": "backend for project chaos",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
