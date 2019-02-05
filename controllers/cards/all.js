@@ -3,9 +3,19 @@ import db from '../../db/schema';
 const { CardData, Keyword } = db
 
 const _get = (req, res, next) => {
-    CardData.findAll({
-        include: [{all: true}]
-    })
+    CardData.findAll({include: [{all: true}]})
+    // .then(data => {
+    //     var obj = data.dataValues;
+    //     console.log(data);
+    //     obj.forEach(d => {
+    //         var keywordArray = [];
+    //         d.keyword.forEach(k => {
+    //             keywordArray.push(k.keyword)
+    //         })
+    //         d.keyword = keywordArray;
+    //     })
+    //     return obj;
+    // })
     .then(res.send.bind(res))
     .catch(next);
 }
@@ -18,7 +28,7 @@ const _put = (req, res, next) => {
             var key = await Keyword.findOrCreate({where: {keyword: keyW[i]}})
             await card.addKeyword(key[0])
         }
-        return card
+        return cardcardDataId
     })
     .then(res.send.bind(res))
     .catch(next);
@@ -36,7 +46,34 @@ const _put = (req, res, next) => {
     // }
 }
 
+const _byRarity = (req, res, next) => {
+    var rarity = req.params.rarity
+    CardData.findAll({where: {
+        rarity
+    }})
+    .then(res.send.bind(res))
+    .catch(next);
+}
+
+const _byType = (req, res, next) => {
+    var type = req.params.type
+    CardData.findAll({where: {
+        type
+    }})
+    .then(res.send.bind(res))
+    .catch(next);
+}
+
+const query = (req, res, next) => {
+    CardData.findAll({where: req.query})
+    .then(res.send.bind(res))
+    .catch(next);
+}
+
 export default {
     get: _get,
-    put: _put
+    put: _put,
+    byRarity: _byRarity,
+    byType: _byType,
+    query
 }

@@ -11,6 +11,12 @@ const CardData = Conn.define('cardData',{
             type: Sequelize.TEXT,
             allowNull: false
         },
+        rarity: {
+            type: Sequelize.STRING,
+            allowNull: false,
+            values: ['Free', 'Common', 'Rare', 'Epic', 'Legendry'],
+            defaultValue: 'Common'
+        },
         basePower: {
             type: Sequelize.INTEGER,
             defaultValue: 0,
@@ -40,7 +46,7 @@ const CardData = Conn.define('cardData',{
         baseCost: {
             type: Sequelize.INTEGER,
             allowNull: false,
-        },
+        }
     }
 )
 
