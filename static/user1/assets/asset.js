@@ -1,0 +1,1 @@
+var asset = 'this is assset';
