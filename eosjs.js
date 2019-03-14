@@ -4,9 +4,9 @@ import fetch from 'node-fetch';
 import { TextEncoder, TextDecoder } from 'util';
 
 const connectToController = {
-    EOS_CONTRACT_NAME: "user1account",
-    EOS_HTTP_ENDPOINT: "https://api-kylin.eoslaomao.com",
-    KEY: "5JPWAgrAGPncMNNgM8wwxvjCNpfj9xy36SmDoMyhx2pna5ZHvCm"
+    EOS_CONTRACT_NAME: "user3account",
+    EOS_HTTP_ENDPOINT: "https://api-kylin.eosasia.one",
+    KEY: "5KXjokua65nwPAPqEga93w7SGZsbdX75JziUcpuQMhGhWy4t8GH"
 }
 
 const connectToCard = {
@@ -89,6 +89,14 @@ class ApiService {
   static create(actor, key, issuer, symbol) {
       return takeAction( actor, key, "create", { issuer, symbol }, connectToCard);
   }
+
+  static createPack(actor, key, packname, colname, cards) {
+      return takeAction( actor, key, "creatpack", { packname, colname, cards }, connectToController);
+  }
+
+  static createCollection(actor, key, packname, colname, cards) {
+    return takeAction( actor, key, "creatpack", { packname, colname, cards }, connectToController);
+}
 
   static issue(actor, key, send) {
       return takeAction(actor, key, "issue", send, connectToCard);

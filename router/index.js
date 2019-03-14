@@ -25,6 +25,8 @@ export default function(app) {
     app.get('/card/tokens', cardTables.getTableToken);
     app.get('/controller/packslogs', controllerTables.getTablePackslogs);
 
+    // app.get('/pack/create')
+
     
     // app.get('/cards', cardController.all.get);
     // app.get('/cards/:id', cardController.id);
