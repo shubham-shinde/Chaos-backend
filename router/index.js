@@ -12,6 +12,7 @@
 // import controllerTables from '../controllers/eos/controllerTables';
 // import newController from '../controllers/eos/controllerActons2';
 import actions from '../controllers/eos/controllerActionsPost';
+import table from '../controllers/eos/controllerActionsGet';
 
 export default function(app) {
     app.post('/card/add', actions.addcard);
@@ -95,6 +96,13 @@ export default function(app) {
     //     "owner" : "user2account",
     //     "sellOrderId" : 10
     // }
+
+    app.get('/table/users', table.getTableuser);
+    app.get('/table/packs', table.getTablepack);
+    app.get('/table/carddirs', table.getTablecarddir);
+    app.get('/table/sellords', table.getTablesellorders);
+    app.get('/table/buyords', table.getTablebuyorders);
+    app.get('/table/cards', table.getTablecard);
 
 
 

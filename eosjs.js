@@ -209,7 +209,7 @@ class ApiService {
   // }
 
   static async getTablecard(options) {
-    console.log(options);
+    // console.log(options);
     return getTable(connectToController, "card", options);
   }
   
@@ -218,12 +218,20 @@ class ApiService {
   }
 
   static async getTablepack(options) {
-    console.log(options);
+    // console.log(options);
     return getTable(connectToController, "pack", options);
   }
   
   static async getTableuser(options) {
     return getTable(connectToController, "user", options);
+  }
+  
+  static async getTablebuyorders(options) {
+    return getTable(connectToController, "buyorders", options);
+  }
+  
+  static async getTablesellorders(options) {
+    return getTable(connectToController, "sellorders", options);
   }
 
 }
