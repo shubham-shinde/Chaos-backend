@@ -101,8 +101,8 @@ class ApiService {
   //     return takeAction( actor, key, "open", { packName, option, accountName }, connectToController);
   // }
 
-  static addcard(s, cardName, type, faction, manaCost, attack, health, expset, craftCost, cardText, cardKeywords) {
-    return takeAction( "user2account", "5KKuYt4FfejEn7r71aiQD32SnevyAPf3GTsUStHpVcV9qGDGWmJ", "addcard", { s, cardName, type, faction, manaCost, attack, health, expset, craftCost, cardText, cardKeywords }, connectToController);
+  static addcard(s,cardId, cardName, type, faction, manaCost, attack, health, expset, craftCost, cardText, cardKeywords) {
+    return takeAction( "user2account", "5KKuYt4FfejEn7r71aiQD32SnevyAPf3GTsUStHpVcV9qGDGWmJ", "addcard", { s, cardId, cardName, type, faction, manaCost, attack, health, expset, craftCost, cardText, cardKeywords }, connectToController);
   }
 
   static rmcard( s , cardName) {
@@ -151,6 +151,22 @@ class ApiService {
 
   static updpacks( userName, _ownedPacks) {
     return takeAction( actor, key, "updpacks", { userName, _ownedPacks }, connectToController);
+  }
+
+  static addbuyord( userName, cardId) {
+    return takeAction( actor, key, "addbuyord", { userName, cardId }, connectToController);
+  }
+
+  static addsellord( userName, cardId) {
+    return takeAction( actor, key, "addsellord", { userName, cardId }, connectToController);
+  }
+
+  static rmbuyord( owner, buyOrderId) {
+    return takeAction( actor, key, "rmbuyord", { owner, buyOrderId }, connectToController);
+  }
+
+  static rmsellord( owner, sellOrderId) {
+    return takeAction( actor, key, "rmsellord", { owner, sellOrderId }, connectToController);
   }
 
 //   static login({ username, key }) {

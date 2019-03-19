@@ -2,8 +2,9 @@ var jn = require('../../pythonscript/data.json');
 import api from '../../eosjs';
 
 async function addallcard() {
-    for(var i=0;i<jn.length; i++) {
+    for(var i=33;i<jn.length; i++) {
         var s = !jn[i]["Notes"] ? "name" : jn[i]["Notes"];
+        var cardId = i+59;
         var cardName = !jn[i]["Notes"] ? "name" : jn[i]["Notes"];
         var type = !jn[i]["Type"] ? "type" : jn[i]["Type"];
         var faction = !jn[i]["SubType"] ? "sub type" : jn[i]["SubType"];
@@ -27,7 +28,7 @@ async function addallcard() {
         //     cardText,
         //     cardKeywords
         // })
-        await api.addcard( s, cardName, type, faction, manaCost, attack, health, expset, craftCost, cardText, cardKeywords);
+        await api.addcard( s,cardId, cardName, type, faction, manaCost, attack, health, expset, craftCost, cardText, cardKeywords);
         console.log('done ', cardName);
     }
 }
@@ -40,15 +41,15 @@ addallcard().then(d => {
 
 export default jn;
 
-{
-    "cardName":     "Lao, Grand Adjudicator",
-    "type":         "Unit",
-    "faction":      "Unique Character - Apostle",
-    "manaCost":     8,
-    "attack":       3,
-    "health":       8,
-    "expset":       "Chiffon",
-    "craftCost":    8,
-    "cardText":     "Pin all other Units.",
-    "cardKeywords": "pata nhi"
-}
+// {
+//     "cardName":     "Lao, Grand Adjudicator",
+//     "type":         "Unit",
+//     "faction":      "Unique Character - Apostle",
+//     "manaCost":     8,
+//     "attack":       3,
+//     "health":       8,
+//     "expset":       "Chiffon",
+//     "craftCost":    8,
+//     "cardText":     "Pin all other Units.",
+//     "cardKeywords": "pata nhi"
+// }

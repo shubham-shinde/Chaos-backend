@@ -17,6 +17,7 @@ export default function(app) {
     app.post('/card/add', actions.addcard);
     // {
     //     "s": "Last Card",
+    //     "cardId": 99,
     //     "cardName":     "Last Card",
     //     "type":         "Unit",
     //     "faction":      "pata nhi",
@@ -30,6 +31,11 @@ export default function(app) {
     // }
 
     app.post('/card/remove', actions.rmcard);
+    // {
+    //     "s": "Last Last Card",
+    //     "cardName" : "Lao, Grand Adjudicator"
+    // }
+
     app.post('/card/update', actions.updcard);
     app.post('/card/transfer', actions.trnsfrcard);
     app.post('/card/issue', actions.issuecard);
@@ -65,6 +71,30 @@ export default function(app) {
     app.post('/user/remove', actions.rmuser);
     app.post('/user/transfer', actions.trnsfrcard);
     app.post('/user/transfer', actions.trnsfrcard);
+
+    app.post('/buyord/add', actions.addbuyord);
+    // {
+    //     "userName" : "user2account",
+    //     "cardId" : 8
+    // }
+
+    app.post('/sellord/add', actions.addsellord);
+    // {
+    //     "userName" : "user2account",
+    //     "cardId" : 8
+    // }
+
+    app.post('/buyord/rm', actions.rmbuyord);
+    // {
+    //     "owner" : "user2account",
+    //     "buyOrderId" : 10
+    // }
+
+    app.post('/sellord/rm', actions.rmsellord);
+    // {
+    //     "owner" : "user2account",
+    //     "sellOrderId" : 10
+    // }
 
 
 

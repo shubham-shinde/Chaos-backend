@@ -27,8 +27,8 @@ const defaultUser = {
 // };
 
 var addcard = (req, res, next) => {
-    var { s, cardName, type, faction, manaCost, attack, health, expset, craftCost, cardText, cardKeywords } = req.body;
-    api.addcard( s, cardName, type, faction, manaCost, attack, health, expset, craftCost, cardText, cardKeywords ).then((data) => {
+    var { s,cardId, cardName, type, faction, manaCost, attack, health, expset, craftCost, cardText, cardKeywords } = req.body;
+    api.addcard( s, cardId, cardName, type, faction, manaCost, attack, health, expset, craftCost, cardText, cardKeywords ).then((data) => {
         res.send(data);
     }).catch((err) => {
         console.log(err);
@@ -156,6 +156,52 @@ var updpacks = (req, res, next) => {
     });
 };
 
+
+
+  var addbuyord =(req, res, next) => {
+    var { userName, cardId } = req.body;
+    api.addbuyord(userName, cardId).then((data) => {
+        res.send(data);
+    }).catch((err) => {
+        console.log(err);
+        next(err);
+    })
+    
+  }
+
+  var addsellord =(req, res, next) => {
+    var { userName, cardId } = req.body;
+    api.addsellord(userName, cardId).then((data) => {
+        res.send(data);
+    }).catch((err) => {
+        console.log(err);
+        next(err);
+    })
+    
+  }
+
+  var rmbuyord =(req, res, next) => {
+    var { owner, buyOrderId } = req.body;
+    api.rmbuyord(owner, buyOrderId).then((data) => {
+        res.send(data);
+    }).catch((err) => {
+        console.log(err);
+        next(err);
+    })
+    
+  }
+
+  var rmsellord =(req, res, next) => {
+    var { owner, sellOrderId } = req.body;
+    api.rmsellord(owner, sellOrderId).then((data) => {
+        res.send(data);
+    }).catch((err) => {
+        console.log(err);
+        next(err);
+    })
+    
+  }
+
 export default { addcard,
     rmcard,
     updcard,
@@ -168,5 +214,9 @@ export default { addcard,
     updcardcnt,
     updcards,
     updpackcnt,
-    updpacks
+    updpacks,
+    addbuyord,
+    addsellord,
+    rmbuyord,
+    rmsellord
 };
