@@ -1,4 +1,5 @@
 import api from '../../eosjs';
+import { runInNewContext } from 'vm';
 // import check from 'express-validator/check';
 
 
@@ -89,7 +90,24 @@ var issuecard = (req, res, next) => {
 var openpack = (req, res, next) => {
     var { packId, owner } = req.body;
     api.openpack( packId, owner && defaultUser.NAME ).then((data) => {
-        res.send(data);
+        // res.send(data);
+        api.getTablepack({}).then(data => {
+            // console.log(data);
+            var d = data.filter(k => {
+                return k.packId === packId;
+            });
+            var reqPack = d[0];
+            var cardIDs = reqPack.populatedCards;
+            api.getTablecard({limit: 500}).then((dd) => {
+                var reqCards = dd.filter((card) => {
+                    for(var i=0; i<cardIDs.length; i++) {
+                        if(cardIDs[i]===card.cardId) return true;
+                    }
+                    return false;
+                });
+                res.send({ data : reqPack, cards : reqCards });
+            })
+        })
     }).catch((err) => {
         console.log(err);
         next(err);

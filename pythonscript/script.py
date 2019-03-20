@@ -1,3 +1,6 @@
 import pandas as pd
 
-f = pd.csv
+f = pd.read_csv("CardList.csv")
+
+f.to_json(path_or_buf="j.json", orient='records')
+    
