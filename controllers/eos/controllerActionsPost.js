@@ -188,8 +188,8 @@ var updpacks = (req, res, next) => {
   }
 
   var addsellord =(req, res, next) => {
-    var { userName, cardId } = req.body;
-    api.addsellord(userName, cardId).then((data) => {
+    var { userName, cardId, priceInDollars } = req.body;
+    api.addsellord(userName, cardId, priceInDollars).then((data) => {
         res.send(data);
     }).catch((err) => {
         console.log(err);

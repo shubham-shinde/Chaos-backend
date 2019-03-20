@@ -157,8 +157,8 @@ class ApiService {
     return takeAction( actor, key, "addbuyord", { userName, cardId }, connectToController);
   }
 
-  static addsellord( userName, cardId) {
-    return takeAction( actor, key, "addsellord", { userName, cardId }, connectToController);
+  static addsellord( userName, cardId, priceInDollars) {
+    return takeAction( actor, key, "addsellord", { userName, cardId, priceInDollars }, connectToController);
   }
 
   static rmbuyord( owner, buyOrderId) {
