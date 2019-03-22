@@ -99,12 +99,18 @@ var openpack = (req, res, next) => {
             var reqPack = d[0];
             var cardIDs = reqPack.populatedCards;
             api.getTablecard({limit: 500}).then((dd) => {
-                var reqCards = dd.filter((card) => {
-                    for(var i=0; i<cardIDs.length; i++) {
-                        if(cardIDs[i]===card.cardId) return true;
+                // var reqCards = dd.filter((card) => {
+                //     for(var i=0; i<cardIDs.length; i++) {
+                //         if(cardIDs[i]===card.cardId) return true;
+                //     }
+                //     return false;
+                // });
+                var reqCards = [];
+                for(var i=0; i<dd.length; i++) {
+                    for(var j=0; j<cardIDs.length; j++) {
+                        if(cardIDs[j]===dd[i].cardId) reqCards.push(dd[i]);
                     }
-                    return false;
-                });
+                }
                 res.send({ data : reqPack, cards : reqCards });
             })
         })

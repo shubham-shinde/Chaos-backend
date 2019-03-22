@@ -82,7 +82,8 @@ export default function(app) {
     app.post('/sellord/add', actions.addsellord);
     // {
     //     "userName" : "user2account",
-    //     "cardId" : 8
+    //     "cardId" : 8, 
+    //     "priceInDollars" 
     // }
 
     app.post('/buyord/rm', actions.rmbuyord);
