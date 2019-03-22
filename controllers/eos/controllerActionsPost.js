@@ -87,37 +87,89 @@ var issuecard = (req, res, next) => {
     });
 };
 
-var openpack = (req, res, next) => {
-    var { packId, owner } = req.body;
-    api.openpack( packId, owner && defaultUser.NAME ).then((data) => {
-        // res.send(data);
-        api.getTablepack({}).then(data => {
-            // console.log(data);
-            var d = data.filter(k => {
-                return k.packId === packId;
-            });
-            var reqPack = d[0];
-            var cardIDs = reqPack.populatedCards;
-            api.getTablecard({limit: 500}).then((dd) => {
-                // var reqCards = dd.filter((card) => {
-                //     for(var i=0; i<cardIDs.length; i++) {
-                //         if(cardIDs[i]===card.cardId) return true;
-                //     }
-                //     return false;
-                // });
-                var reqCards = [];
-                for(var i=0; i<dd.length; i++) {
-                    for(var j=0; j<cardIDs.length; j++) {
-                        if(cardIDs[j]===dd[i].cardId) reqCards.push(dd[i]);
+// var openpack =  (req, res, next) => {
+//     var { packId, owner } = req.body;
+//     api.openpack( packId, owner && defaultUser.NAME ).then((data) => {
+//         // res.send(data);
+//         api.getTablepack({}).then(data => {
+//             // console.log(data);
+//             var d = data.filter(k => {
+//                 return k.packId === packId;
+//             });
+//             var reqPack = d[0];
+//             var cardIDs = reqPack.populatedCards;
+//             api.getTablecard({limit: 500}).then((dd) => {
+//                 // var reqCards = dd.filter((card) => {
+//                 //     for(var i=0; i<cardIDs.length; i++) {
+//                 //         if(cardIDs[i]===card.cardId) return true;
+//                 //     }
+//                 //     return false;
+//                 // });
+//                 var reqCards = [];
+//                 for(var i=0; i<dd.length; i++) {
+//                     for(var j=0; j<cardIDs.length; j++) {
+//                         if(cardIDs[j]===dd[i].cardId) reqCards.push(dd[i]);
+//                     }
+//                 }
+//                 res.send({ data : reqPack, cards : reqCards });
+//             })
+//         })
+//     }).catch((err) => {
+//         console.log(err);
+//         next(err);
+//     });
+// };
+
+var openpack = async (req, res, next) => {
+    try {
+        var { packId, owner } = req.body;
+        var packTable = await api.getTablepack({limit: 500});
+        var available=0;
+        for(var i=0; i<packTable.length; i++) {
+            if(packTable[i].packId==packId) {
+                available=1;
+            }
+        }
+        var newPackId = packId;
+        if(available===0) {
+            var packType = String(packId);
+            await api.issuepack(packType, owner);
+            while(packId === newPackId) {
+                packTable = await api.getTablepack({limit:500});
+                for(var i=0; i<packTable.length; i++) {
+                    console.log(packTable[i].packType);
+                    if(packTable[i].packType==packType) {
+                        newPackId=packTable[i].packId;
+                        console.log(newPackId);
                     }
                 }
-                res.send({ data : reqPack, cards : reqCards });
-            })
-        })
-    }).catch((err) => {
+                console.log('Notfound');
+            }
+            packId = newPackId;
+        }
+        console.log(packId);
+        await api.openpack( packId, owner && defaultUser.NAME );
+        packTable = await api.getTablepack({limit:500});
+        // console.log(packTable);
+        var d = packTable.filter(k => {
+            return k.packId === packId;
+        });
+        var reqPack = d[0];
+        console.log(reqPack);
+        var cardIDs = reqPack.populatedCards;
+        var cardTable = await api.getTablecard({limit: 500});
+        var reqCards = [];
+        for(var i=0; i<cardTable.length; i++) {
+            for(var j=0; j<cardIDs.length; j++) {
+                if(cardIDs[j]===cardTable[i].cardId) reqCards.push(cardTable[i]);
+            }
+        }
+        res.send({ data : reqPack, cards : reqCards });
+    }   
+    catch(err) {
         console.log(err);
         next(err);
-    });
+    }
 };
 
 var adduser = (req, res, next) => {

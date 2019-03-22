@@ -99,3 +99,5 @@ Backend Server for Project Chaos
 
     ### http://url/table/cards' ---------- (TYPE - GET)
 
+
+connect to server - ssh -i "pack_controller.pem" ubuntu@ec2-3-81-38-49.compute-1.amazonaws.com
