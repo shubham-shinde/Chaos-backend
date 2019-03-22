@@ -15,6 +15,9 @@ import actions from '../controllers/eos/controllerActionsPost';
 import table from '../controllers/eos/controllerActionsGet';
 
 export default function(app) {
+    app.get('/', function(req, res, next) {
+        res.sendFile('index.html')
+    })
     app.post('/card/add', actions.addcard);
     // {
     //     "s": "Last Card",
