@@ -71,7 +71,8 @@ Backend Server for Project Chaos
     ### http://url/sellord/add --------- (TYPE - POST)
     body = {
         "userName" : "user2account",
-        "cardId" : 8
+        "cardId" : 8,
+        "priceInDollars": "20"
     }
 
     ### http://url/buyord/rm --------- (TYPE - POST)

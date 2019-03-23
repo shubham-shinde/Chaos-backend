@@ -86,7 +86,7 @@ export default function(app) {
     // {
     //     "userName" : "user2account",
     //     "cardId" : 8, 
-    //     "priceInDollars" 
+    //     "priceInDollars"  : "10"
     // }
 
     app.post('/buyord/rm', actions.rmbuyord);
