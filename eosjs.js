@@ -3,17 +3,20 @@ import JsSignatureProvider from 'eosjs/dist/eosjs-jssig'
 import fetch from 'node-fetch';
 import { TextEncoder, TextDecoder } from 'util';
 
-const connectToController = {
+const connectToCard = {
     EOS_CONTRACT_NAME: "user3account",
     EOS_HTTP_ENDPOINT: "https://api-kylin.eosasia.one",
     KEY: "5KXjokua65nwPAPqEga93w7SGZsbdX75JziUcpuQMhGhWy4t8GH"
 }
 
-const connectToCard = {
+const connectToController = {
     EOS_CONTRACT_NAME: "user2account",
     EOS_HTTP_ENDPOINT: "https://api-kylin.eosasia.one",
     KEY: "5KKuYt4FfejEn7r71aiQD32SnevyAPf3GTsUStHpVcV9qGDGWmJ"
 }
+
+const actor = connectToController.EOS_CONTRACT_NAME;
+const key = connectToController.KEY;
 
 // Main action call to blockchain
 //takes action name, values, and key & actor i.e Action taker.
@@ -27,6 +30,7 @@ async function takeAction(actor, key, action, dataValue, EndPoint) {
   // console.log(await rpc.get_account('user1account'));
   // Main call to blockchain after setting action, account_name and data
   try {
+    console.log(dataValue);
     const resultWithConfig = await api.transact({
       actions: [{
         account: EndPoint.EOS_CONTRACT_NAME,
@@ -50,18 +54,21 @@ async function takeAction(actor, key, action, dataValue, EndPoint) {
 
 async function getTable(EndPoint, Table, options) {
   try {
-    const rpc = new JsonRpc(EndPoint.EOS_HTTP_ENDPOINT);
+    const rpc = new JsonRpc(EndPoint.EOS_HTTP_ENDPOINT, {fetch});
     const result = await rpc.get_table_rows({
+      "reverse": options.reverse && options.reverse,
       "json": true,
       "code": EndPoint.EOS_CONTRACT_NAME,    // contract who owns the table
       "scope": EndPoint.EOS_CONTRACT_NAME,   // scope of the table
       "table": Table,    // name of the table as specified by the contract abi
       "limit": options.limit && options.limit,
+      "index_position": "primary",
       "lower_bound": options.lower_bound && options.lower_bound,
     });
+    // console.log(EndPoint);
     return result.rows;
   } catch (err) {
-    console.error(err);
+    console.error("err",err);
     return err;
   }
 }
@@ -86,43 +93,80 @@ class ApiService {
   //   });
   // }
 
-  static create(actor, key, issuer, symbol) {
-      return takeAction( actor, key, "create", { issuer, symbol }, connectToCard);
+  // static addpack(actor, key, s, packName) {
+  //     return takeAction( actor, key, "addpack", { s, packName }, connectToController);
+  // }
+
+  // static open(actor, key, packName, option, accountName) {
+  //     return takeAction( actor, key, "open", { packName, option, accountName }, connectToController);
+  // }
+
+  static addcard(s,cardId, cardName, type, faction, manaCost, attack, health, expset, craftCost, cardText, cardKeywords) {
+    return takeAction( "user2account", "5KKuYt4FfejEn7r71aiQD32SnevyAPf3GTsUStHpVcV9qGDGWmJ", "addcard", { s, cardId, cardName, type, faction, manaCost, attack, health, expset, craftCost, cardText, cardKeywords }, connectToController);
   }
 
-  static createPack(actor, key, packname, colname, cards) {
-      return takeAction( actor, key, "creatpack", { packname, colname, cards }, connectToController);
+  static rmcard( s , cardName) {
+    return takeAction( actor, key, "rmcard", { s, cardName }, connectToController);
   }
 
-  static createCollection(actor, key, packname, colname, cards) {
-    return takeAction( actor, key, "creatpack", { packname, colname, cards }, connectToController);
-}
-
-  static issue(actor, key, send) {
-      return takeAction(actor, key, "issue", send, connectToCard);
+  static updcard( cardName, type, faction, cardText, cardKeywords) {
+    return takeAction( actor, key, "updcard", { cardName, type, faction, cardText, cardKeywords }, connectToController);
   }
 
-  static transfer(actor, key, from, to, quantity) {
-      return takeAction(actor, key, "transfer", {from, to, quantity}, connectToCard);
+  static trnsfrcard( issueNumber, ownerFrom, ownerTo) {
+    return takeAction( actor, key, "trnsfrcard", { issueNumber, ownerFrom, ownerTo }, connectToController);
   }
 
-  static burn(actor, key, owner, token_id) {
-      return takeAction(actor, key, "burn", {token_id, owner}, connectToCard);
+  static issuepack( packType, owner) {
+    return takeAction( actor, key, "issuepack", { packType, owner }, connectToController);
   }
 
-  static transferid(actor, key, send) {
-      return takeAction(actor, key, "transferid", send, connectToCard);
-  }
-  static setrampayer(actor, key, payer, id) {
-      return takeAction(actor, key, "setrampayer", { payer, id });
+  static issuecard( cardName, owner) {
+    return takeAction( actor, key, "issuecard", { cardName, owner }, connectToController);
   }
 
-  static upsert(actor, key, send) {
-      return takeAction(actor, key, "upsert", send, connectToController);
+  static openpack( packId, owner) {
+    return takeAction( actor, key, "openpack", { packId, owner }, connectToController);
   }
 
-  static erase(actor, key, user) {
-      return takeAction(actor, key, "erase", { user }, connectToController);
+  static adduser( actor, key, s, userName) {
+    return takeAction( actor, key, "adduser", { s, userName }, connectToController);
+  }
+
+  static rmuser( s, userName) {
+    return takeAction( actor, key, "rmuser", { s, userName }, connectToController);
+  }
+
+  static updcardcnt( userName, newCardsCount) {
+    return takeAction( actor, key, "updcardcnt", { userName, newCardsCount }, connectToController);
+  }
+
+  static updcards( userName, _newCards) {
+    return takeAction( actor, key, "updcards", { userName, _newCards }, connectToController);
+  }
+
+  static updpackcnt( userName, newPacksCount) {
+    return takeAction( actor, key, "updpackcnt", { userName, newPacksCount }, connectToController);
+  }
+
+  static updpacks( userName, _ownedPacks) {
+    return takeAction( actor, key, "updpacks", { userName, _ownedPacks }, connectToController);
+  }
+
+  static addbuyord( userName, cardId) {
+    return takeAction( actor, key, "addbuyord", { userName, cardId }, connectToController);
+  }
+
+  static addsellord( userName, cardId, priceInDollars) {
+    return takeAction( actor, key, "addsellord", { userName, cardId, priceInDollars }, connectToController);
+  }
+
+  static rmbuyord( owner, buyOrderId) {
+    return takeAction( actor, key, "rmbuyord", { owner, buyOrderId }, connectToController);
+  }
+
+  static rmsellord( owner, sellOrderId) {
+    return takeAction( actor, key, "rmsellord", { owner, sellOrderId }, connectToController);
   }
 
 //   static login({ username, key }) {
@@ -142,17 +186,52 @@ class ApiService {
 //     });
 //   }
 
-  static async getTableAccounts(options) {
-    return getTable(connectToCard, "accounts", options);
+  // static async getTableAccounts(options) {
+  //   return getTable(connectToCard, "accounts", options);
+  // }
+  // static async getTableStat(options) {
+  //   return getTable(connectToCard, "stat", options);
+  // }
+  // static async getTableToken(options) {
+  //   return getTable(connectToCard, "token", options);
+  // }
+  // static async getTablePackslogs(options) {
+  //   return getTable(connectToController, "packslogs", options);
+  // }
+
+  // static async getTableopenedpacks(options) {
+  //   console.log(options);
+  //   return getTable(connectToController, "openedpacks", options);
+  // }
+  
+  // static async getTablepacks(options) {
+  //   return getTable(connectToController, "pack", options);
+  // }
+
+  static async getTablecard(options) {
+    // console.log(options);
+    return getTable(connectToController, "card", options);
   }
-  static async getTableStat(options) {
-    return getTable(connectToCard, "stat", options);
+  
+  static async getTablecarddir(options) {
+    return getTable(connectToController, "carddir", options);
   }
-  static async getTableToken(options) {
-    return getTable(connectToCard, "token", options);
+
+  static async getTablepack(options) {
+    // console.log(options);
+    return getTable(connectToController, "pack", options);
   }
-  static async getTablePackslogs(options) {
-    return getTable(connectToController, "packslogs", options);
+  
+  static async getTableuser(options) {
+    return getTable(connectToController, "user", options);
+  }
+  
+  static async getTablebuyorders(options) {
+    return getTable(connectToController, "buyorders", options);
+  }
+  
+  static async getTablesellorders(options) {
+    return getTable(connectToController, "sellorders", options);
   }
 
 }

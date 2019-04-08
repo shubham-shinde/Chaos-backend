@@ -10,6 +10,7 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json({extended: false}));
 // app.use(express_validator());
+app.use(express.static(__dirname + '/static'));
 route(app);
 
 app.listen(SERVER_PORT, (err) => {
